@@ -1,0 +1,23 @@
+Problem Link: https://leetcode-cn.com/problems/online-stock-span/
+Keyword: Monotonic stack
+Solution: 给定一个数Ai，问小于等于该数的连续区间长度  等价于Aj > Ai,长度是i - j, 显然所有对Ai有意义的Aj构成下降序列
+
+Code:
+
+class StockSpanner {
+public:
+    int cnt = 0;
+    stack<pair<int, int>> prices;
+    StockSpanner() {
+
+    }
+    
+    int next(int price) {
+        while (!prices.empty() && price >= prices.top().first) {
+            prices.pop();
+        }
+        int length = ++cnt - (prices.empty()?0:prices.top().second);
+        prices.push({price, cnt});
+        return length;
+    }
+};
