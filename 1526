@@ -1,0 +1,21 @@
+Problem Link: https://leetcode-cn.com/problems/minimum-number-of-increments-on-subarrays-to-form-a-target-array/
+Keyword: Monotonic stack
+Solution: 对于数字ai，想象有ai条线段画出去，下一个数为ai+1，则ai+1 > ai, 新画ai+1-ai条，如果ai+1 > ai, 代表接下来只能画ai条
+
+Code：
+class Solution {
+public:
+    int validSubarrays(vector<int>& nums) {
+        long long ans = 0;
+        stack<pair<int, int>> Stack;
+        for (int i = nums.size() - 1; i >= 0; --i) {
+            while (!Stack.empty() && nums[i] <= Stack.top().first) {
+                Stack.pop();
+            }
+            int length = (Stack.empty()?nums.size():Stack.top().second) - i;
+            Stack.push({nums[i], i});
+            ans += length;
+        }
+        return ans;
+    }
+};
