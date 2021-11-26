@@ -1,0 +1,21 @@
+Problem Link: https://leetcode-cn.com/problems/number-of-valid-subarrays/
+Keyword: Monotonic stack
+Solution: 给定一个数Ai，问该数开始区间个数，满足大于等于该数的区间。等价于求满足要求的最大连续区间长度  等价于Aj < Ai,长度是j - i, 显然所有对Ai有意义的Aj构成下降序列
+
+Code:
+class Solution {
+public:
+    int validSubarrays(vector<int>& nums) {
+        long long ans = 0;
+        stack<pair<int, int>> Stack;
+        for (int i = nums.size() - 1; i >= 0; --i) {
+            while (!Stack.empty() && nums[i] <= Stack.top().first) {
+                Stack.pop();
+            }
+            int length = (Stack.empty()?nums.size():Stack.top().second) - i;
+            Stack.push({nums[i], i});
+            ans += length;
+        }
+        return ans;
+    }
+};
