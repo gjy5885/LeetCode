@@ -1,0 +1,27 @@
+Prob Link: https://leetcode-cn.com/problems/maximum-number-of-people-that-can-be-caught-in-tag/
+Keyword: Counter Data Struct
+Solution: let 0 represent -1, 1 represent 1, for each i, count prefix sum S[i], the answer is how many j satisfies S[j] < S[i]. It can be solved by Counter.
+
+class Solution {
+public:
+    int subarraysWithMoreZerosThanOnes(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> cnt(2 * n + 1);
+        cnt[n] = 1;
+        int s = n, sum_head = 0;
+        long long ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (nums[i]) {
+                sum_head += cnt[s];
+                ++s;
+            }
+            else {
+                sum_head -= cnt[s - 1];
+                --s;
+            }
+            cnt[s]++;
+            ans += sum_head;
+        }
+        return ans % 1000000007;
+    }
+};
